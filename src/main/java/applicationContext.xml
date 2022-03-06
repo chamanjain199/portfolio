@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="stockRepository"
+		class="portfolio.com.stock.repository.StockRepository">
+	</bean>
+
+	<bean id="stock" scope="prototype"
+		class="portfolio.com.stock.model.Stock">
+	</bean>
+
+	<bean id="stockService"
+		class="portfolio.com.stock.service.StockService">
+		<constructor-arg ref="stockRepository" />
+		<constructor-arg ref="stock" />
+	</bean>
+	
+	<bean id="stockService2"
+		class="portfolio.com.stock.service.StockService2">
+		<constructor-arg ref="stockRepository" />
+		    <lookup-method name="createCommand" />
+
+	</bean>
+
+	<bean id="dashboardService"
+		class="portfolio.com.stock.service.DashboardService">
+		<constructor-arg ref="stockService" />
+	</bean>
+	
+	<bean id="mutualFundService"
+		class="portfolio.com.stock.service.MutualFundService">
+		<constructor-arg ref="stockService2" />
+	</bean>
+	
+	<bean id="stockController"
+		class="portfolio.com.stock.controller.StockController">
+		<constructor-arg ref="stockService" />
+		<constructor-arg ref="stockService2" />
+		<constructor-arg ref="stock" />
+	</bean>
+
+</beans>
